@@ -17,20 +17,29 @@
   <body>
   
   <div class="header imgs">
-  	<img src='cid:header' alt="" />
+  	<img src='cid:header' alt="" style="width:100%;"/>
   </div>
   
   <div class="container">
   	<spam>Estimado/a: </spam> ${destinatarioNombre}
-  	<div class="row imgs" style="margin: 0 0 0 110px;" >
-    	<h2>PROYECTO: ${proyectoNombre}</h2>
+  	<div class="row" >
+    	<spam>Proyecto | Sistema: ${proyectoNombre}</spam>
   	</div>
+	<br>
 	<div class="row">
 		${contenido}
 	</div>
   </div>
   <br>
   <br>
+  <br>
+  
+  <div class="row">
+  <spam>Saludos Cordiales,</spam>
+  <br>
+  <br>
+  <strong><spam>Equipo de Soporte</spam></strong>
+  </div>
   <br>
   <div class="footer imgs">
   	<div class="row"> 
@@ -45,7 +54,9 @@
 		</a>
   	</div>
   	<div class="row">Quito - Ecuador.</div>
-  	<img src='cid:footer' alt="" />
+  	<img src='cid:footer' alt="" style="width:100%;"/>
+  	<br>
+  	<spam>Favor no responder este mensaje que ha sido emitido automáticamente por el Sistema Central del Ministerio de Agricultura y Ganadería.</spam>
   </div>
   
 
