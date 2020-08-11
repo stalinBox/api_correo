@@ -50,7 +50,7 @@ public class CorreosController implements ErrorController {
 		model.put("proyectoNombre", emailRequest.getProyectoNombre());
 		model.put("destinatarioNombre", emailRequest.getDestinatarioNombre());
 		String response = emailService.sendHTMLEmail(emailRequest, model);
-
+		// CAMBIO
 		return ResponseEntity.ok(new ResponseDTO("OK", response));
 	}
 
