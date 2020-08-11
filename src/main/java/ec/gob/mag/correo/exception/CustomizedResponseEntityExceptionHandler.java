@@ -12,110 +12,57 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ControllerAdvice
-@RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-	@SuppressWarnings("unused")
-	private final static Logger LOGGER = LoggerFactory.getLogger(ResponseEntityExceptionHandler.class);
-
 	@Autowired
 	private MessageSource messageSource;
 
+	@SuppressWarnings("unused")
+	private final static Logger LOGGER = LoggerFactory.getLogger(ResponseEntityExceptionHandler.class);
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public final ResponseEntity buildException(Exception ex, HttpStatus status, String msgProperty, String msgDetail,
-			String msgException, EnumCodeExceptions myTypeCod) {
-		String proyecto = messageSource.getMessage("name.proyect", null, LocaleContextHolder.getLocale());
-
-		ExceptionResponse exResponse;
-		try {
-			String jsonStringU = ex.getMessage();
-			ObjectMapper mapper = new ObjectMapper();
-			ExceptionResponse myEx = mapper.readValue(jsonStringU, ExceptionResponse.class);
-			myEx.setStatus(status);
-			myEx.setStatusCode(status.value());
-			myEx.setTimestamp(new Date());
-			exResponse = myEx;
-		} catch (Exception e) {
-			String msgEx = null;
-			if (msgException == null) {
-				if (msgProperty != null)
-					msgEx = messageSource.getMessage(msgProperty, null, LocaleContextHolder.getLocale());
-				else
-					msgEx = ex.getMessage();
-			} else
-				msgEx = msgException;
-			myTypeCod = (myTypeCod == null ? EnumCodeExceptions.ERROR_UNRECOGNIZABLE : myTypeCod);
-			EnumTypeExceptions myTypeEx = (myTypeCod == EnumCodeExceptions.ERROR_UNRECOGNIZABLE
-					? EnumTypeExceptions.CRITICAL
-					: EnumTypeExceptions.WARN);
-			exResponse = new ExceptionResponse(status, null, new Date(), msgEx, null, msgDetail, proyecto, null, null,
-					myTypeEx);
-		}
-
-		return new ResponseEntity(exResponse, status);
-	}
-
-	@SuppressWarnings("unchecked")
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.INTERNAL_SERVER_ERROR, null, null, null, null);
+		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+				HttpStatus.INTERNAL_SERVER_ERROR.value(), new Date(), ex.getMessage(), request.getDescription(true));
+		return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@SuppressWarnings("unchecked")
-	@ExceptionHandler(MyNotFoundException.class)
-	public final ResponseEntity<Object> handleMyNotFoundException(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.NOT_FOUND, null, null, null, null);
-	}
-
-	@SuppressWarnings("unchecked")
-	@ExceptionHandler(MyInternalException.class)
-	public final ResponseEntity<Object> handleMyInternalException(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.INTERNAL_SERVER_ERROR, null, null, null, null);
-	}
-
-	@SuppressWarnings("unchecked")
-	@ExceptionHandler(CmNotFoundException.class)
-	public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.NOT_FOUND, null, null, null, null);
-	}
-
-	@SuppressWarnings("unchecked")
-	@ExceptionHandler(MyBadRequestException.class)
-	public final ResponseEntity<Object> handleBadRequestException(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.BAD_REQUEST, null, null, null, null);
-	}
-
-	// ERRORES INTERNOS
-
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ExceptionHandler(IllegalArgumentException.class)
 	public final ResponseEntity<Object> handleIllegalArgumentException(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.INTERNAL_SERVER_ERROR, null, null, null, null);
-
+		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(),
+				new Date(), "Error: No se ha enviado el correo, verifique parametros de envio",
+				request.getDescription(true));
+		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ExceptionHandler(NoSuchElementException.class)
 	public final ResponseEntity<Object> handleNoSuchElementException(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.INTERNAL_SERVER_ERROR, "error.entity_not_exist_find_array.message", null,
-				null, null);
+		ExceptionResponse exceptionResponse = new ExceptionResponse(
+				HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), new Date(), messageSource
+						.getMessage("error.entity_not_exist_find_array.message", null, LocaleContextHolder.getLocale()),
+				request.getDescription(true));
+		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExceptionHandler(StackOverflowError.class)
 	public final ResponseEntity<Object> handleStackOverFlowError(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.INTERNAL_SERVER_ERROR, null, null, null, null);
+		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+				HttpStatus.INTERNAL_SERVER_ERROR.value(), new Date(), ex.getMessage(), request.getDescription(true));
+		return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@SuppressWarnings("unchecked")
-	@ExceptionHandler(InternalError.class)
-	public final ResponseEntity<Object> handleInternalException(Exception ex, WebRequest request) {
-		return buildException(ex, HttpStatus.INTERNAL_SERVER_ERROR, null, null, null, null);
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@ExceptionHandler(NotFoundException.class)
+	public final ResponseEntity<Object> handleCatalogoNotFoundException(Exception ex, WebRequest request) {
+		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(),
+				new Date(), ex.getMessage(), request.getDescription(true));
+		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
-
 }

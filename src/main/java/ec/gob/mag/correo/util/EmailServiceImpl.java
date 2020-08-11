@@ -9,6 +9,8 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import ec.gob.mag.correo.dto.EmailRequestDto;
+import ec.gob.mag.correo.exception.NotFoundException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -28,6 +31,9 @@ public class EmailServiceImpl implements EmailService {
 
 	@Autowired
 	private Configuration configuration;
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@Value("${from}")
 	private String from;
@@ -53,11 +59,11 @@ public class EmailServiceImpl implements EmailService {
 			mimeMessageHelper.addInline("header", header);
 			mimeMessageHelper.addInline("footer", footer);
 			javaMailSender.send(mimeMessage);
-
-			response = "Email enviado a :" + request.getPara();
+			response = "Email enviado a: " + request.getPara();
 		} catch (MessagingException | IOException | TemplateException e) {
-			System.out.println("EXEPCION: " + e.toString());
-			response = "Email no se pudo enviar :" + request.getPara();
+			throw new NotFoundException(
+					String.format(messageSource.getMessage("ERROR", null, LocaleContextHolder.getLocale()),
+							this.getClass().getName()));
 		}
 		return response;
 	}

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ec.gob.mag.correo.dto.EmailRequestDto;
+import ec.gob.mag.correo.dto.ResponseDTO;
 import ec.gob.mag.correo.util.EmailService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
@@ -42,14 +43,15 @@ public class CorreosController implements ErrorController {
 	@RequestMapping(value = "/mail/", method = RequestMethod.POST)
 	@ApiOperation(value = "Envio de mails", response = Object.class)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<String> sendMail(@Validated @RequestBody EmailRequestDto emailRequest,
+	public ResponseEntity<?> sendMail(@Validated @RequestBody EmailRequestDto emailRequest,
 			@RequestHeader(name = "Authorization") String auth) {
 		Map<String, String> model = new HashMap<>();
 		model.put("contenido", emailRequest.getContenido());
 		model.put("proyectoNombre", emailRequest.getProyectoNombre());
 		model.put("destinatarioNombre", emailRequest.getDestinatarioNombre());
 		String response = emailService.sendHTMLEmail(emailRequest, model);
-		return new ResponseEntity<>(response, HttpStatus.OK);
+
+		return ResponseEntity.ok(new ResponseDTO("OK", response));
 	}
 
 	@Override
