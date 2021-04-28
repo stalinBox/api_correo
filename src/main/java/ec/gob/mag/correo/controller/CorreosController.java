@@ -56,7 +56,7 @@ public class CorreosController implements ErrorController {
 		model.put("proyectoNombre", emailRequest.getProyectoNombre());
 		model.put("destinatarioNombre", emailRequest.getDestinatarioNombre());
 		String response = emailService.sendHTMLEmail(emailRequest, model);
-		LOGGER.info("api/mail/" + response + " usuario: " + util.filterUsuId(token));
+		LOGGER.info("api_corrreo/api/mail_notificacion/" + response + " usuario: " + util.filterUsuId(token));
 		return ResponseEntity.ok(new ResponseDTO("OK", response));
 	}
 
