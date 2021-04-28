@@ -46,7 +46,7 @@ public class CorreosController implements ErrorController {
 	@Qualifier("util")
 	private Util util;
 
-	@RequestMapping(value = "/mail/", method = RequestMethod.POST)
+	@RequestMapping(value = "/mail_notificacion/", method = RequestMethod.POST)
 	@ApiOperation(value = "Envio de mails", response = Object.class)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> sendMail(@Validated @RequestBody EmailRequestDto emailRequest,
