@@ -18,10 +18,11 @@
   
   <div class="header imgs">
   	<img src='cid:header' alt="" style="width:100%;"/>
+  	<hr>
   </div>
   
   <div class="container">
-  	<spam>Estimado/a: </spam> ${destinatarioNombre}
+  	<spam>Estimado/a: ${destinatarioNombre} </spam>
   	<div class="row" >
     	<spam>Proyecto | Sistema: ${proyectoNombre}</spam>
   	</div>
@@ -41,6 +42,7 @@
   <strong><spam>Equipo de Soporte</spam></strong>
   </div>
   <br>
+  
   <div class="footer imgs">
   	<div class="row"> 
   		<strong><spam>Ministerio de Agricultura y Ganadería</spam></strong>
@@ -56,7 +58,8 @@
   	<div class="row">Quito - Ecuador.</div>
   	<img src='cid:footer' alt="" style="width:100%;"/>
   	<br>
-  	<spam>Favor no responder este mensaje que ha sido emitido automáticamente por el Sistema Central del Ministerio de Agricultura y Ganadería.</spam>
+  	<span>No responder,</span><br>
+  	<span>Este mensaje que ha sido emitido automáticamente por el Sistema Central del Ministerio de Agricultura y Ganadería.</span>
   </div>
   
 
