@@ -64,5 +64,5 @@ public class CorreosController implements ErrorController {
 	public String getErrorPath() {
 		return PATH;
 	}
-// fin 
+// OK 
 }
