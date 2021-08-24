@@ -12,4 +12,4 @@ import lombok.Setter;
 public class ResponseDTO {
 	private String status;
 	private String message;
-}
+}// OK
