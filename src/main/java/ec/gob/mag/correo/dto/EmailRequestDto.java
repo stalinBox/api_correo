@@ -11,4 +11,4 @@ public class EmailRequestDto {
 	private String contenido;
 	private String destinatarioNombre;
 	private String proyectoNombre;
-}
+}// OK
